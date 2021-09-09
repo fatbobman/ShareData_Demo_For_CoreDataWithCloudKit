@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="19197" systemVersion="21A5506j" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="Memo" representedClassName="Memo" syncable="YES" codeGenerationType="class">
+        <attribute name="text" optional="YES" attributeType="String"/>
+        <relationship name="note" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Note" inverseName="memos" inverseEntity="Note"/>
+    </entity>
+    <entity name="Note" representedClassName="Note" syncable="YES" codeGenerationType="class">
+        <attribute name="name" optional="YES" attributeType="String"/>
+        <relationship name="memos" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Memo" inverseName="note" inverseEntity="Memo"/>
+    </entity>
+    <configuration name="Private">
+        <memberEntity name="Memo"/>
+        <memberEntity name="Note"/>
+    </configuration>
+    <elements>
+        <element name="Note" positionX="-63" positionY="-18" width="128" height="59"/>
+        <element name="Memo" positionX="-54" positionY="0" width="128" height="59"/>
+    </elements>
+</model>
