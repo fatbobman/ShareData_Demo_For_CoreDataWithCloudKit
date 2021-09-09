@@ -114,6 +114,28 @@ extension CoreDataStack {
     func canDelete(object: NSManagedObject) -> Bool {
         return persistentContainer.canDeleteRecord(forManagedObjectWith: object.objectID)
     }
+
+    func isOwner(object:NSManagedObject) -> Bool{
+        guard isShared(object: object) else {return false}
+        guard let share = try? persistentContainer.fetchShares(matching: [object.objectID])[object.objectID] else {
+            print("Get ckshare error")
+            return false
+        }
+        if let currentUser = share.currentUserParticipant,currentUser == share.owner {
+            return true
+        }
+        return false
+    }
+
+    func getShare(object:Note) -> CKShare?{
+        guard isShared(object: object) else {return nil}
+        guard let share = try? persistentContainer.fetchShares(matching: [object.objectID])[object.objectID] else {
+            print("Get ckshare error")
+            return nil
+        }
+        share[CKShare.SystemFieldKey.title] = object.name 
+        return share
+    }
 }
 
 extension CoreDataStack {
@@ -131,6 +153,7 @@ extension CoreDataStack {
         let note = Note(context: context)
         context.perform {
             note.name = "Note\(Int.random(in: 1000...2000))"
+            note.timestamp = Date()
             self.save()
         }
     }
@@ -140,6 +163,29 @@ extension CoreDataStack {
         context.perform {
             memo.note = note
             memo.text = Date().formatted()
+            memo.timestamp = Date()
+            self.save()
+        }
+    }
+
+    func deleteNote(_ note:Note){
+        context.perform {
+            self.context.delete(note)
+            self.save()
+        }
+    }
+
+    func deleteMemo(_ memo:Memo){
+        context.perform {
+            self.context.delete(memo)
+            self.save()
+        }
+    }
+
+    func changeMemoText(_ memo:Memo) {
+        context.perform {
+            let text = memo.text ?? ""
+            memo.text = text.appending(String(" \(Int.random(in: 0...9))"))
             self.save()
         }
     }

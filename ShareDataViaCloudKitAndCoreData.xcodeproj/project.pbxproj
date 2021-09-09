@@ -15,6 +15,8 @@
 		7601FD1226E9EB9B0030E82D /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 7601FD1026E9EB9B0030E82D /* Model.xcdatamodeld */; };
 		7601FD1426E9EC360030E82D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7601FD1326E9EC360030E82D /* AppDelegate.swift */; };
 		7601FD1926E9FD620030E82D /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7601FD1826E9FD620030E82D /* CloudKit.framework */; };
+		7601FD1B26E9FEBD0030E82D /* NoteDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7601FD1A26E9FEBD0030E82D /* NoteDetailView.swift */; };
+		7601FD1D26EA18ED0030E82D /* ShareController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7601FD1C26EA18ED0030E82D /* ShareController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -29,6 +31,8 @@
 		7601FD1526E9FD290030E82D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		7601FD1626E9FD420030E82D /* ShareDataViaCloudKitAndCoreData.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ShareDataViaCloudKitAndCoreData.entitlements; sourceTree = "<group>"; };
 		7601FD1826E9FD620030E82D /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
+		7601FD1A26E9FEBD0030E82D /* NoteDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteDetailView.swift; sourceTree = "<group>"; };
+		7601FD1C26EA18ED0030E82D /* ShareController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -68,7 +72,9 @@
 				7601FD0026E9EA450030E82D /* ShareDataViaCloudKitAndCoreDataApp.swift */,
 				7601FD1326E9EC360030E82D /* AppDelegate.swift */,
 				7601FD0226E9EA450030E82D /* ContentView.swift */,
+				7601FD1A26E9FEBD0030E82D /* NoteDetailView.swift */,
 				7601FD0E26E9EB3A0030E82D /* CoreDataStack.swift */,
+				7601FD1C26EA18ED0030E82D /* ShareController.swift */,
 				7601FD1026E9EB9B0030E82D /* Model.xcdatamodeld */,
 				7601FD0426E9EA460030E82D /* Assets.xcassets */,
 				7601FD0626E9EA460030E82D /* Preview Content */,
@@ -165,8 +171,10 @@
 				7601FD0F26E9EB3A0030E82D /* CoreDataStack.swift in Sources */,
 				7601FD0326E9EA450030E82D /* ContentView.swift in Sources */,
 				7601FD0126E9EA450030E82D /* ShareDataViaCloudKitAndCoreDataApp.swift in Sources */,
+				7601FD1B26E9FEBD0030E82D /* NoteDetailView.swift in Sources */,
 				7601FD1426E9EC360030E82D /* AppDelegate.swift in Sources */,
 				7601FD1226E9EB9B0030E82D /* Model.xcdatamodeld in Sources */,
+				7601FD1D26EA18ED0030E82D /* ShareController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

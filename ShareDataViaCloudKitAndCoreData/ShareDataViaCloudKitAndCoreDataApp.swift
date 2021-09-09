@@ -10,11 +10,11 @@ import SwiftUI
 @main
 struct ShareDataViaCloudKitAndCoreDataApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
-    let stack = CoreDataStack.shared
+    let container = CoreDataStack.shared.persistentContainer
     var body: some Scene {
         WindowGroup {
             ContentView()
-                .environment(\.managedObjectContext, stack.persistentContainer.viewContext)
+                .environment(\.managedObjectContext, container.viewContext)
         }
     }
 }
