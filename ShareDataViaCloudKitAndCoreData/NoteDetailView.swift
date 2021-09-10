@@ -83,7 +83,7 @@ struct NoteDetailView: View {
         }
         .navigationTitle(note.name ?? "")
         .sheet(isPresented: $showShareController) {
-            let share = stack.getShare(object: note)!
+            let share = stack.getShare(note)!
             CloudSharingView(share: share, container: stack.ckContainer, note: note)
                 .ignoresSafeArea()
         }

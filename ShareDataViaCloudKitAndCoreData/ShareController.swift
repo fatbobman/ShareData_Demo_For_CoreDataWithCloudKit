@@ -47,10 +47,22 @@ class CloudSharingCoordinator:NSObject,UICloudSharingControllerDelegate{
     }
 
     func cloudSharingControllerDidStopSharing(_ csc: UICloudSharingController){
-       // 应该处理掉ckshare,不过目前没有官方的解决方案。还在寻找中。
-        print("remove from share")
+
+        guard let note = note else {return}
+        if !stack.isOwner(object: note) {
+            stack.deleteNote(note)
+            print("删除本地共享数据")
+        }
+        else {
+            // 应该处理掉ckshare,目前不起作用。已提交feedback，希望官方提供正式的恢复方式。
+            let share = stack.getShare(note)
+            Task.detached{
+                await self.stack.delShare(share)
+            }
+        }
     }
     static let shared = CloudSharingCoordinator()
+    let stack = CoreDataStack.shared
     var note:Note?
 }
 

@@ -115,25 +115,25 @@ extension CoreDataStack {
         return persistentContainer.canDeleteRecord(forManagedObjectWith: object.objectID)
     }
 
-    func isOwner(object:NSManagedObject) -> Bool{
-        guard isShared(object: object) else {return false}
+    func isOwner(object: NSManagedObject) -> Bool {
+        guard isShared(object: object) else { return false }
         guard let share = try? persistentContainer.fetchShares(matching: [object.objectID])[object.objectID] else {
             print("Get ckshare error")
             return false
         }
-        if let currentUser = share.currentUserParticipant,currentUser == share.owner {
+        if let currentUser = share.currentUserParticipant, currentUser == share.owner {
             return true
         }
         return false
     }
 
-    func getShare(object:Note) -> CKShare?{
-        guard isShared(object: object) else {return nil}
-        guard let share = try? persistentContainer.fetchShares(matching: [object.objectID])[object.objectID] else {
+    func getShare(_ note: Note) -> CKShare? {
+        guard isShared(object: note) else { return nil }
+        guard let share = try? persistentContainer.fetchShares(matching: [note.objectID])[note.objectID] else {
             print("Get ckshare error")
             return nil
         }
-        share[CKShare.SystemFieldKey.title] = object.name 
+        share[CKShare.SystemFieldKey.title] = note.name
         return share
     }
 }
@@ -158,7 +158,7 @@ extension CoreDataStack {
         }
     }
 
-    func addMemo(_ note:Note) {
+    func addMemo(_ note: Note) {
         let memo = Memo(context: context)
         context.perform {
             memo.note = note
@@ -168,25 +168,34 @@ extension CoreDataStack {
         }
     }
 
-    func deleteNote(_ note:Note){
+    func deleteNote(_ note: Note) {
         context.perform {
             self.context.delete(note)
             self.save()
         }
     }
 
-    func deleteMemo(_ memo:Memo){
+    func deleteMemo(_ memo: Memo) {
         context.perform {
             self.context.delete(memo)
             self.save()
         }
     }
 
-    func changeMemoText(_ memo:Memo) {
+    func changeMemoText(_ memo: Memo) {
         context.perform {
             let text = memo.text ?? ""
             memo.text = text.appending(String(" \(Int.random(in: 0...9))"))
             self.save()
+        }
+    }
+
+    func delShare(_ share: CKShare?) async {
+        guard let share = share else { return }
+        do {
+            try await ckContainer.privateCloudDatabase.deleteRecord(withID: share.recordID)
+        } catch {
+            print("Failed to delete ckshare in icloud, error: \(error)")
         }
     }
 }
