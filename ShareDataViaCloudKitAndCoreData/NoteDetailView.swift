@@ -16,6 +16,8 @@ struct NoteDetailView: View {
     private let stack = CoreDataStack.shared
     @State private var showShareController = false
     @FetchRequest private var memos: FetchedResults<Memo>
+    @State var sharing = false
+
     init(note: Note) {
         self.note = note
         _memos = FetchRequest(entity: Memo.entity(),
@@ -48,11 +50,20 @@ struct NoteDetailView: View {
         .toolbar {
             ToolbarItem {
                 HStack {
+                    if sharing {
+                        ProgressView()
+                    }
+
                     Button {
                         if isShared {
                             showShareController = true
                         } else {
-                            openSharingController(note: note)
+                            // 先出现弹窗，后生成ckshare，用户体验会更好些
+//                            openSharingController(note: note)
+                            // 生成ckshare后弹窗
+                            Task.detached {
+                                await createShare(note)
+                            }
                         }
                     }
                     label: {
@@ -74,6 +85,7 @@ struct NoteDetailView: View {
         .sheet(isPresented: $showShareController) {
             let share = stack.getShare(object: note)!
             CloudSharingView(share: share, container: stack.ckContainer, note: note)
+                .ignoresSafeArea()
         }
     }
 
@@ -103,5 +115,18 @@ struct NoteDetailView: View {
 
     private var isShared: Bool {
         stack.isShared(object: note)
+    }
+    
+    func createShare(_ note: Note) async {
+        sharing = true
+        do {
+            let (_, share, _) = try await stack.persistentContainer.share([note], to: nil)
+            share[CKShare.SystemFieldKey.title] = note.name
+        } catch {
+            print("Faile to create share")
+            sharing = false
+        }
+        sharing = false
+        showShareController = true
     }
 }
