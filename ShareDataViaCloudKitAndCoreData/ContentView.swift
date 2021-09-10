@@ -32,17 +32,23 @@ struct ContentView: View {
                                         .foregroundColor(.green)
                                 }
                             }
+                            if !canEdit(note) {
+                                Image(systemName: "pencil.slash")
+                                    .foregroundColor(.red)
+                            }
                         }
                         .id(id)
                     }
                     .swipeActions {
-                        Button(role: .destructive) {
-                            withAnimation {
-                                stack.deleteNote(note)
+                        if canEdit(note) {
+                            Button(role: .destructive) {
+                                withAnimation {
+                                    stack.deleteNote(note)
+                                }
                             }
-                        }
-                        label: {
-                            Label("Del", systemImage: "trash")
+                            label: {
+                                Label("Del", systemImage: "trash")
+                            }
                         }
                     }
                 }
@@ -60,8 +66,12 @@ struct ContentView: View {
                 }
             }
             .navigationTitle("ShareDemo")
-            .onAppear{id = UUID()}
+            .onAppear { id = UUID() }
         }
+    }
+
+    private func canEdit(_ note: Note) -> Bool {
+        stack.canEdit(object: note)
     }
 }
 

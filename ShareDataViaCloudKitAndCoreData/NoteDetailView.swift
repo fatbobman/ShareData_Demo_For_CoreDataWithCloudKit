@@ -31,19 +31,21 @@ struct NoteDetailView: View {
             ForEach(memos) { memo in
                 Text(memo.text ?? "")
                     .swipeActions {
-                        Button(role: .destructive) {
-                            stack.deleteMemo(memo)
+                        if canEdit {
+                            Button(role: .destructive) {
+                                stack.deleteMemo(memo)
+                            }
+                            label: {
+                                Label("Del", systemImage: "trash")
+                            }
+                            Button {
+                                stack.changeMemoText(memo)
+                            }
+                            label: {
+                                Label("Edit", systemImage: "square.and.pencil")
+                            }
+                            .tint(.orange)
                         }
-                        label: {
-                            Label("Del", systemImage: "trash")
-                        }
-                        Button {
-                            stack.changeMemoText(memo)
-                        }
-                        label: {
-                            Label("Edit", systemImage: "square.and.pencil")
-                        }
-                        .tint(.orange)
                     }
             }
         }
@@ -69,13 +71,15 @@ struct NoteDetailView: View {
                     label: {
                         Image(systemName: "square.and.arrow.up")
                     }
-                    Button {
-                        withAnimation {
-                            stack.addMemo(note)
+                    if canEdit {
+                        Button {
+                            withAnimation {
+                                stack.addMemo(note)
+                            }
                         }
-                    }
-                    label: {
-                        Image(systemName: "plus")
+                        label: {
+                            Image(systemName: "plus")
+                        }
                     }
                 }
                 .controlGroupStyle(.navigation)
@@ -116,7 +120,11 @@ struct NoteDetailView: View {
     private var isShared: Bool {
         stack.isShared(object: note)
     }
-    
+
+    private var canEdit: Bool {
+        stack.canEdit(object: note)
+    }
+
     func createShare(_ note: Note) async {
         sharing = true
         do {
